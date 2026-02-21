@@ -1,5 +1,4 @@
 ---
-layout: '../../layouts/BlogPost.astro'
 title: 'Forget Goals, Focus on Systems'
 description: 'Systems > Goals'
 pubDate: 'Dec 23 2022'

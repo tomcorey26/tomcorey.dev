@@ -12,29 +12,20 @@ const credits = {
   },
 };
 
-export interface Props {
-  content: {
+interface Props {
+  frontmatter?: {
     title: string;
     description: string;
-    pubDate?: string;
-    updatedDate?: string;
+    pubDate?: string | Date;
+    updatedDate?: string | Date;
     heroImage?: string;
     imgCredit?: keyof typeof credits;
     imgAlt?: string;
   };
 }
 
-const {
-  content: {
-    title,
-    description,
-    pubDate,
-    updatedDate,
-    heroImage,
-    imgAlt,
-    imgCredit,
-  },
-} = Astro.props;
+const props = Astro.props.frontmatter ?? Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, imgAlt, imgCredit } = props as any;
 ---
 
 <html lang="en">
@@ -85,11 +76,11 @@ const {
           imgCredit && (
             <div>
               Photo by{' '}
-              <a class="credit-link" target="_blank" href={credits[imgCredit].profileUrl}>
+              <a class="credit-link" target="_blank" href={credits[imgCredit]?.profileUrl}>
                 {imgCredit}
               </a>{' '}
               on{' '}
-              <a class="credit-link" target="_blank" href={credits[imgCredit].imgUrl}>
+              <a class="credit-link" target="_blank" href={credits[imgCredit]?.imgUrl}>
                 Unsplash
               </a>
             </div>
@@ -97,11 +88,11 @@ const {
         }
 
         <h1 class="title">{title}</h1>
-        {pubDate && <time>{pubDate}</time>}
+        {pubDate && <time>{pubDate instanceof Date ? pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }) : pubDate}</time>}
         {
           updatedDate && (
             <div>
-              Last updated on <time>{updatedDate}</time>
+              Last updated on <time>{updatedDate instanceof Date ? updatedDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }) : updatedDate}</time>
             </div>
           )
         }

@@ -7,18 +7,8 @@ type Props = JobExperience;
 
 const getMonthName = (month: number) => {
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
   ];
   return monthNames[month];
 };
@@ -36,42 +26,19 @@ export default function JobExperience(job: Props) {
             <h3>{job.company}</h3>
           </a>
         </div>
-        <i>
-          {formatDate(job.startDate)} -{" "}
-          {job.endDate ? formatDate(job.endDate) : "Present"} (
-          {(() => {
-            const days = Math.round(
-              ((job.endDate || new Date()).getTime() -
-                job.startDate.getTime()) /
-                (1000 * 60 * 60 * 24)
-            );
-            const years = Math.floor(days / 365.25);
-            const months = Math.round(days / 30.44);
-
-            if (years >= 1) {
-              return `${years} ${years === 1 ? "year" : "years"}`;
-            } else {
-              return `${months} ${months === 1 ? "month" : "months"}`;
-            }
-          })()}
-          )
-        </i>
+        <span className="job__date">
+          [{formatDate(job.startDate)} - {job.endDate ? formatDate(job.endDate) : "PRESENT"}]
+        </span>
         <ul className="job__points">
-          {job.points.map((point, index) => (
-            <li
-              key={point}
-              style={{ "--point-index": index } as React.CSSProperties}
-            >
+          {job.points.map((point) => (
+            <li key={point}>
               <p>{point}</p>
             </li>
           ))}
         </ul>
         <ul className="job__skills">
-          {job.skills.map((skill, i) => (
-            <li
-              key={skill + job.company}
-              style={{ "--tech-index": i } as React.CSSProperties}
-            >
+          {job.skills.map((skill) => (
+            <li key={skill + job.company}>
               <TechCell tech={skill} />
             </li>
           ))}

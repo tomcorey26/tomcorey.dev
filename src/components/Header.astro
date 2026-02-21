@@ -9,10 +9,8 @@ import { SITE_TITLE } from "../config";
       <h2>
         {SITE_TITLE}
       </h2>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
+      <button class="menu-toggle" id="hamburger" aria-label="Toggle menu">
+        [MENU]
       </button>
     </div>
     <nav id="nav">
@@ -53,7 +51,7 @@ import { SITE_TITLE } from "../config";
     right: 2rem;
     height: 1px;
     background: var(--accent);
-    opacity: 0.3;
+    opacity: 0.4;
   }
 
   .header-top {
@@ -64,46 +62,32 @@ import { SITE_TITLE } from "../config";
 
   h2 {
     margin: 0;
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
-    color: var(--accent-light);
-    letter-spacing: -0.5px;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+    letter-spacing: 0.1em;
   }
 
-  .hamburger {
+  .menu-toggle {
     display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
     background: none;
-    border: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.4rem 0.8rem;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 0.85rem;
     cursor: pointer;
-    padding: 0.5rem;
-    z-index: 100;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
-  .hamburger-line {
-    width: 24px;
-    height: 2px;
-    background: var(--accent-light);
-    transition: all 0.3s ease;
-  }
-
-  .hamburger.active .hamburger-line:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  .hamburger.active .hamburger-line:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.active .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
+  .menu-toggle:hover {
+    background: rgba(255, 176, 0, 0.1);
   }
 
   nav {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.25rem;
     flex-wrap: wrap;
     margin-top: 1rem;
   }
@@ -118,8 +102,8 @@ import { SITE_TITLE } from "../config";
       right: 1rem;
     }
 
-    .hamburger {
-      display: flex;
+    .menu-toggle {
+      display: block;
     }
 
     nav {
@@ -128,7 +112,7 @@ import { SITE_TITLE } from "../config";
       gap: 0;
       margin-top: 1rem;
       background: var(--surface);
-      border-radius: 8px;
+      border: 1px solid var(--border);
       overflow: hidden;
     }
 
@@ -138,7 +122,7 @@ import { SITE_TITLE } from "../config";
 
     nav :global(a) {
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--border);
     }
 
     nav :global(a:last-child) {

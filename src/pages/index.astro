@@ -18,7 +18,6 @@ const jobs: JobExperience[] = [
     company: "DealerOn",
     companyUrl: "https://www.dealeron.com/",
     emoji: "🚗",
-    logo: "https://media.licdn.com/dms/image/v2/D4E0BAQE0rro_noAHwA/company-logo_100_100/B4EZeyBk_QG4AU-/0/1751038448044/dealeron_inc_logo?e=1758758400&v=beta&t=9DLVRNbAbHuJisAREn8yCxqV8-2CNqpiRNASLBgkXjU",
     startDate: new Date("2020-12-23"),
     points: [
       `Lead UI development for the inventory team and develop full-stack solutions within a cross-functional agile environment`,
@@ -47,7 +46,6 @@ const jobs: JobExperience[] = [
     company: "CVS Health",
     companyUrl: "https://www.cvshealth.com/",
     emoji: "🏥",
-    logo: "https://media.licdn.com/dms/image/v2/C4E0BAQEhOw_KVli-CQ/company-logo_100_100/company-logo_100_100/0/1669901807779/cvs_health_logo?e=1758758400&v=beta&t=igAalYXweOJbVvykHVkz6Bzb6srgc3mZBFKl-F1ww6M",
     startDate: new Date("2020-10-01"),
     endDate: new Date("2020-12-20"),
     points: [
@@ -62,7 +60,6 @@ const jobs: JobExperience[] = [
     company: "Maverick Investment Tech",
     companyUrl: "https://www.linkedin.com/company/maverick-investment-tech/",
     emoji: "📈",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQET0W6apKlh9Q/company-logo_100_100/company-logo_100_100/0/1630521649519/maverick_investment_tech_logo?e=1758758400&v=beta&t=5w8-3djs2yQDjORC_e8QEuiLaiLLdDMqMLPwVN7Ebx0",
     startDate: new Date("2020-01-01"),
     endDate: new Date("2020-10-01"),
     points: [
@@ -102,9 +99,9 @@ const jobs: JobExperience[] = [
           <a
             href="#experience"
             class="cta-link secondary"
-            id="view-experience-btn">View My Experience ↓</a
+            id="view-experience-btn">View My Experience</a
           >
-          <a href="mailto:tombcorey@gmail.com" class="cta-link gradient-cta"
+          <a href="mailto:tombcorey@gmail.com" class="cta-link primary"
             >Shoot Me an Email</a
           >
         </div>
@@ -125,71 +122,36 @@ const jobs: JobExperience[] = [
       .portrait {
         width: 180px;
         height: 180px;
-        border-radius: 50%;
+        border-radius: 8px;
         display: block;
         margin: 0 auto 1.5rem;
         object-fit: cover;
         object-position: center 80%;
-        animation: portrait-load 0.8s ease-out forwards;
+        border: 2px solid var(--accent);
+        outline: 2px solid var(--accent-dim);
+        outline-offset: 3px;
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
+        animation: portrait-load 0.6s ease-out forwards;
       }
 
       @keyframes portrait-load {
         0% {
           opacity: 0;
-          transform: scale(0.8) translateY(20px);
         }
         100% {
           opacity: 1;
-          transform: scale(1) translateY(0);
         }
       }
 
       .introduction p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         line-height: 1.8;
         max-width: 600px;
         margin: 0 auto;
       }
 
       .introduction strong {
-        color: var(--accent-light);
-        font-weight: 600;
-      }
-
-      .introduction a {
-        color: white;
-      }
-
-      .introduction a:hover {
-        color: var(--text-primary);
-      }
-
-      .cta-link {
-        display: block;
-        background: var(--accent);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 6px;
-        font-weight: 600;
-        text-decoration: none;
-        margin-top: 0.5rem;
-        display: inline-block;
-      }
-
-      .cta-link:hover {
-        opacity: 0.9;
-        color: white;
-      }
-
-      .cta-link.secondary {
-        background: transparent;
-        border: 2px solid var(--accent);
-        color: var(--accent-light);
-      }
-
-      .cta-link.secondary:hover {
-        background: var(--accent);
-        color: white;
+        color: var(--accent);
       }
 
       .cta-buttons {
@@ -200,46 +162,36 @@ const jobs: JobExperience[] = [
         margin-top: 1.5rem;
       }
 
-      .gradient-cta {
-        background: linear-gradient(
-          90deg,
-          #667eea,
-          #764ba2,
-          #f093fb,
-          #f5576c,
-          #4facfe,
-          #667eea
-        );
-        background-size: 300% 100%;
-        animation: gradient-shift 4s ease infinite;
-        border: none;
-        color: white;
-        transition: transform 0.2s ease;
+      .cta-link {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 1rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
 
-      .gradient-cta:hover {
-        animation: gradient-shift 1.5s ease infinite;
-        opacity: 1;
-        transform: scale(1.05);
+      .cta-link.primary {
+        background: linear-gradient(180deg, #cc8e00 0%, #aa7500 50%, #886000 100%);
+        color: var(--primary);
+        border: 2px outset #cc8e00;
       }
 
-      @keyframes gradient-shift {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
+      .cta-link.primary:hover {
+        background: linear-gradient(180deg, #ffb000 0%, #cc8e00 50%, #aa7500 100%);
+        border-color: #ffb000;
       }
 
-      .hamster-section {
-        max-width: 1000px;
-        margin: 3rem auto 2rem;
-        padding: 0 2rem;
-        text-align: center;
+      .cta-link.secondary {
+        background: transparent;
+        border: 2px solid var(--accent-dim);
+        color: var(--accent);
+      }
+
+      .cta-link.secondary:hover {
+        border-color: var(--accent);
+        text-shadow: 0 0 8px var(--accent-glow);
       }
 
       @media (max-width: 768px) {
@@ -249,13 +201,8 @@ const jobs: JobExperience[] = [
         }
 
         .introduction p {
-          font-size: 1rem;
+          font-size: 0.95rem;
           padding: 0 1rem;
-        }
-
-        .introduction a {
-          font-size: 1rem;
-          color: white;
         }
 
         .cta-buttons {
@@ -265,14 +212,8 @@ const jobs: JobExperience[] = [
 
         .cta-link {
           padding: 1rem 2rem;
-          font-size: 1.1rem;
           width: 100%;
           text-align: center;
-        }
-
-        .hamster-section {
-          padding: 0 1rem;
-          margin: 2rem auto 1rem;
         }
       }
     </style>

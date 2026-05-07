@@ -1,25 +1,29 @@
 import '../styles/dialog.css';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { dialogTree } from '../constants';
 import { Card } from './Card';
 
 interface DialogOptionProps {
-  index: number;
   option: { text: string; next: string };
   onClick: () => void;
 }
 
-const DialogOption: React.FC<DialogOptionProps> = ({ index, option, onClick }) => {
+const DialogOption: React.FC<DialogOptionProps> = ({ option, onClick }) => {
   return (
     <button className="dialog__option" onClick={onClick}>
-      {index}. {option.text}
+      {option.text}
     </button>
   );
 };
 
-export const Dialog: React.FC = () => {
+// TODO:
+// rap battle with the hamster where 90s hip hop beat plays and he wears a sideways hat and timberlands
+// add googly eyes to my self portrait
+
+export const Dialog: React.FC = (props) => {
   const [dialogText, setDialogText] = useState<string>('');
+
   const [dialogKey, setDialogKey] = useState<keyof typeof dialogTree>('1');
   const [active, setActive] = useState<boolean>(false);
   const [isTalking, setIsTalking] = useState<boolean>(true);
@@ -39,14 +43,16 @@ export const Dialog: React.FC = () => {
     const text = dialogTree[dialogKey].text;
     let charIndex = 0;
 
+    // generate random number 1 - 5
     const random = () => Math.floor(Math.random() * 5) + 1;
 
     interval.current = setInterval(() => {
       if (charIndex < text.length) {
+        // Play sound for each character (but not for spaces)
         if (text[charIndex] !== ' ') {
           audio.current = new Audio(`hamster${random()}.mp3`);
-          audio.current.volume = 0.3;
-          audio.current.play().catch(() => {});
+          audio.current.volume = 0.3; // Lower volume for better experience
+          audio.current.play().catch(() => {}); // Ignore audio errors
         }
 
         setDialogText(text.substring(0, charIndex + 1));
@@ -55,7 +61,7 @@ export const Dialog: React.FC = () => {
         clearInterval(interval.current);
         setTimeout(() => setIsTalking(false), 1000);
       }
-    }, 35);
+    }, 35); // Faster typing speed for better UX
   };
 
   const closeDialog = () => {
@@ -72,26 +78,25 @@ export const Dialog: React.FC = () => {
   };
 
   if (!active) {
-    return <button className="hamster-button" onClick={init}>&gt; TALK TO WASTELAND HAMSTER</button>;
+    return <button className="hamster-button" onClick={init}>🐹 Talk to hamster</button>;
   }
 
   const currentDialog = dialogTree[dialogKey];
   return (
     <Card className="dialog">
-      <button className="dialog__close" onClick={closeDialog}>[X]</button>
+      <button className="dialog__close" onClick={closeDialog}>✕</button>
       <img
         className="dialog__img"
         src="facetime-hamster.jpeg"
-        alt="Wasteland hamster"
+        alt="FaceTime hamster"
       />
       <div className="dialog__text">
         {isTalking ? (
           <p>{dialogText}_</p>
         ) : (
-          currentDialog.options.map((option, i) => (
+          currentDialog.options.map((option) => (
             <DialogOption
               key={option.text}
-              index={i + 1}
               option={option}
               onClick={() => talk(option.next)}
             />

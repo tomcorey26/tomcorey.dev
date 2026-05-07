@@ -1,16 +1,57 @@
 .cell {
-  display: inline-block;
-  padding: 0.35rem 0.75rem;
-  margin: 0.2rem;
-  border: 1px solid var(--accent-dim);
-  color: var(--accent);
-  font-family: "Share Tech Mono", monospace;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  position: relative;
+  display: flex;
+  border-radius: 12px;
+  height: 100px;
+  width: 100px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.2);
 }
 
 .cell:hover {
+  background: rgba(99, 102, 241, 0.15);
   border-color: var(--accent);
-  text-shadow: 0 0 6px var(--accent-glow);
+}
+
+.cell__img-container {
+  position: relative;
+  z-index: 1;
+}
+
+.cell__img-container > img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.cell__language {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+  text-align: center;
+  color: var(--text-primary);
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .cell {
+    height: 80px;
+    width: 80px;
+    margin: 0.3rem;
+  }
+
+  .cell__img-container > img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cell__language {
+    font-size: 11px;
+  }
 }

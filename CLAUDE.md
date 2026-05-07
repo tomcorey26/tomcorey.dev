@@ -4,35 +4,55 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Personal portfolio site for Tom Corey, a software engineer. Built with Astro (SSG) + React. Features a retro amber-on-black terminal/Fallout aesthetic throughout. Homepage showcases job experience; blog section uses Markdown/MDX.
+This is a personal portfolio website built with Astro, featuring blog functionality, MDX support, and React components. The site is for Tom Corey, a software engineer showcasing his work experience and blog posts.
 
 ## Commands
 
 ```bash
-npm run dev          # Dev server at localhost:3000
-npm run build        # Build to ./dist/
-npm run preview      # Preview production build
-npx astro check      # Type-check the project
-```
+# Install dependencies
+npm install
 
-No test framework is configured.
+# Start development server at localhost:3000
+npm run dev
+
+# Build production site to ./dist/
+npm run build
+
+# Preview built site locally
+npm run preview
+
+# Run Astro CLI commands
+npm run astro [command]
+
+# Check project for errors
+npx astro check
+```
 
 ## Architecture
 
-- **Astro v1.6.7** with React integration for interactive components
-- **Styling**: Global CSS variables in `src/styles/global.css` define the amber terminal theme (`--accent: #ffb000`, `--primary: #1a1a0a`, etc.). Component-specific CSS lives in `src/styles/` and is imported by the corresponding React component
-- **Site config**: `src/config.ts` exports `SITE_TITLE` and `SITE_DESCRIPTION`
-- **Global types**: `src/pages/types.d.ts` declares ambient types (e.g., `JobExperience` interface) available project-wide
+### Technology Stack
+- **Framework**: Astro v1.6.7 with SSG (Static Site Generation)
+- **UI Components**: Mix of Astro components (.astro) and React components (.tsx)
+- **Styling**: CSS modules with global styles in `src/styles/global.css`
+- **Content**: MDX for blog posts and pages, supporting both Markdown and React components
+- **Integrations**: React, MDX, Sitemap generation, RSS feed
 
-### Key Components
+### Project Structure
+- **src/pages/**: Routes - each .astro or .md file becomes a route
+  - `index.astro`: Homepage with job experience showcase
+  - `about.mdx`: About page using MDX
+  - `blog.astro`: Blog listing page
+  - `blog/`: Individual blog posts in Markdown
+- **src/components/**: Reusable components
+  - Astro components: BaseHead, Footer, Header, HeaderLink
+  - React components: Card, Dialog, JobExperience, ParticleBackground, TechCell
+- **src/layouts/**: Layout templates (BlogPost.astro for blog posts)
+- **src/config.ts**: Global site configuration (SITE_TITLE, SITE_DESCRIPTION)
+- **public/**: Static assets served directly (images, audio files)
 
-- **Card** (`Card.tsx`): Generic wrapper used by most page sections. Supports polymorphic `tag` prop
-- **JobExperience** (`JobExperience.tsx`): Renders job entries on homepage. Job data is defined inline in `src/pages/index.astro`
-- **Dialog** (`Dialog.tsx`): Interactive "Wasteland Hamster" chat with typewriter effect and audio. Dialog tree defined in `src/constants.ts` as a state machine with numbered keys
-- **BaseHead** (`BaseHead.astro`): Imports global CSS and sets meta/OG tags. Included on all pages
-
-### Content
-
-- Blog posts live in `src/pages/blog/` as `.md`/`.mdx` files with frontmatter (`title`, `description`, `pubDate`, `heroImage`, etc.)
-- Blog post layout is `src/layouts/BlogPost.astro`
-- Static assets (images, audio) go in `public/`
+### Key Patterns
+- Components use TypeScript interfaces for props
+- Blog posts use frontmatter for metadata
+- Global styles imported via BaseHead component
+- React components use client directives (client:load) for hydration
+- Site configuration centralized in src/config.ts

@@ -6,6 +6,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import { Dialog } from "../components/Dialog";
 import { Card } from "../components/Card";
 import JobExperience from "../components/JobExperience";
+import Projects from "../components/Projects.astro";
 
 const firstJobStart = new Date("2020-01-01");
 const yearsOfExperience = Math.floor(
@@ -14,36 +15,34 @@ const yearsOfExperience = Math.floor(
 
 const jobs: JobExperience[] = [
   {
-    title: "Software Engineer",
+    title: "Full-Stack Software Engineer",
     company: "DealerOn",
     companyUrl: "https://www.dealeron.com/",
     emoji: "🚗",
     logo: "https://media.licdn.com/dms/image/v2/D4E0BAQE0rro_noAHwA/company-logo_100_100/B4EZeyBk_QG4AU-/0/1751038448044/dealeron_inc_logo?e=1758758400&v=beta&t=9DLVRNbAbHuJisAREn8yCxqV8-2CNqpiRNASLBgkXjU",
     startDate: new Date("2020-12-23"),
     points: [
-      `Lead UI development for the inventory team and develop full-stack solutions within a cross-functional agile environment`,
+      `Built and shipped a greenfield React application enabling operations teams to self-serve OEM feed configuration, eliminating developer-blocking work and accelerating onboarding of new inventory integrations, with full Playwright test coverage`,
 
-      `Build frontend applications using React, Vue, and TypeScript, alongside backend systems in .NET/C#/Azure, serving 7,000+ automotive dealerships through a high-traffic web platform that processes millions of requests hourly`,
+      `Sole frontend owner of the dealer-facing pricing configuration application serving 7,000+ automotive dealerships, controlling vehicle pricing, financing offers, and OEM CTAs across every dealer website on the platform; modernized framework and state management across 100+ components`,
 
-      `Redesigned and rebuilt a customer-facing vehicle pricing configuration system using Vue.js and .NET APIs, resulting in a 20% reduction in pricing-related support tickets through enhanced UI validation and automated workflows`,
+      `Delivered full-stack integrations with 10+ major partners including Ford, GM, and Capital One, working to external partnership deadlines`,
 
-      `Maintain and enhance a robust inventory management platform featuring RabbitMQ-based microservices that consume data from major OEM vendors (Ford, Toyota, GM, and others), processing over 200,000 daily inventory updates`,
-
-      `Developed a comprehensive export data UI system with seamless integration across 15+ third-party automotive platforms, including CarFax, Google Vehicle Ads, and various OEM-specific inventory feeds`,
+      `Contributed full-stack across a 4-service inventory pipeline processing 200,000+ daily vehicle updates; architected priority queue expansion across 3 microservices and resolved production incidents including a queue storm (25,793 messages) and an Elasticsearch indexer bug affecting 3,876 dealerships`,
     ],
     skills: [
       "React",
-      "Vue",
       "TypeScript",
+      "Playwright",
       ".NET",
       "C#",
-      "Azure",
-      "Elasticsearch",
       "RabbitMQ",
+      "Microservices",
+      "Elasticsearch",
     ],
   },
   {
-    title: "Software Engineer",
+    title: "Software Engineer (Contract)",
     company: "CVS Health",
     companyUrl: "https://www.cvshealth.com/",
     emoji: "🏥",
@@ -51,26 +50,22 @@ const jobs: JobExperience[] = [
     startDate: new Date("2020-10-01"),
     endDate: new Date("2020-12-20"),
     points: [
-      "Worked on a SAFe Agile team delivering solutions for the public CVS Health RESTful API",
-
-      "Utilized TypeScript, React, and Node to create a tool for the generation of API proxies on Google Cloud's Apigee platform",
+      "Built a TypeScript/React tool for automated API proxy generation on Google Cloud's Apigee platform, supporting public CVS Health API infrastructure",
     ],
     skills: ["TypeScript", "React", "Node.js"],
   },
   {
-    title: "Full Stack Software Engineer",
-    company: "Maverick Investment Tech",
+    title: "Software Engineer",
+    company: "Maverick Investment Technologies",
     companyUrl: "https://www.linkedin.com/company/maverick-investment-tech/",
     emoji: "📈",
     logo: "https://media.licdn.com/dms/image/v2/C4D0BAQET0W6apKlh9Q/company-logo_100_100/company-logo_100_100/0/1630521649519/maverick_investment_tech_logo?e=1758758400&v=beta&t=5w8-3djs2yQDjORC_e8QEuiLaiLLdDMqMLPwVN7Ebx0",
     startDate: new Date("2020-01-01"),
     endDate: new Date("2020-10-01"),
     points: [
-      "Worked on an interactive tool to retrieve and visualize stock data for financial analysis using React",
-
-      "Developed a PHP RESTful API to import external stock information from a PostgreSQL datastore",
+      "Developed a React-based financial analysis platform with real-time stock data visualization and PHP REST API integration",
     ],
-    skills: ["JavaScript", "React", "PHP", "PostgreSQL"],
+    skills: ["React", "JavaScript", "PHP", "PostgreSQL"],
   },
 ];
 ---
@@ -89,12 +84,11 @@ const jobs: JobExperience[] = [
           <img class="portrait" src="tom.jpg" alt="Tom Corey" />
           <p class="bio">
             Hey I'm Tom, a full-stack software engineer from Rhode Island with
-            {yearsOfExperience}+ years of experience specializing in <strong
-              >React, Vue, TypeScript, Node.js, and .NET</strong
-            >. I have extensive experience building enterprise-scale
-            applications in cross-functional agile environments, delivering
-            high-performance solutions that serve thousands of users and process
-            millions of requests.
+            {yearsOfExperience}+ years shipping production web applications at
+            scale. I'm strong in <strong
+              >TypeScript, React, Node.js</strong
+            > and modern frontend tooling, with full-stack experience spanning
+            distributed systems and external partner integrations.
             <strong
               >I'm currently looking for a new job, so if you're hiring:</strong
             >
@@ -114,6 +108,19 @@ const jobs: JobExperience[] = [
 
       <section id="experience">
         {jobs.map((job) => <JobExperience {...job} />)}
+      </section>
+
+      <section id="projects">
+        <h2 class="section-heading">Projects</h2>
+        <Projects />
+      </section>
+
+      <section id="education">
+        <h2 class="section-heading">Education</h2>
+        <Card>
+          <h3 class="education__degree">Bachelor of Computer Science</h3>
+          <p class="education__school">The University of Rhode Island</p>
+        </Card>
       </section>
     </main>
 
@@ -244,6 +251,32 @@ const jobs: JobExperience[] = [
         margin: 3rem auto 2rem;
         padding: 0 2rem;
         text-align: center;
+      }
+
+      .section-heading {
+        max-width: 1000px;
+        margin: 3rem auto 1rem;
+        padding: 0 2rem;
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        color: var(--text-primary);
+      }
+
+      .education__degree {
+        margin: 0 0 0.25rem;
+        color: var(--text-primary);
+        font-size: clamp(1.3rem, 3vw, 1.7rem);
+      }
+
+      .education__school {
+        margin: 0;
+        color: var(--text-secondary);
+      }
+
+      @media (max-width: 768px) {
+        .section-heading {
+          padding: 0 1rem;
+          margin: 2rem auto 0.75rem;
+        }
       }
 
       @media (max-width: 768px) {

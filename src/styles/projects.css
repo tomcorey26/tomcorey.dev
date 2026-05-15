@@ -1,0 +1,34 @@
+.projects {
+  display: flex;
+  flex-direction: column;
+}
+
+.project__name {
+  margin: 0 0 0.25rem;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  color: var(--text-primary);
+}
+
+.project__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.project__links a {
+  color: var(--accent-light);
+  font-weight: 600;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.project__links a:hover {
+  text-decoration: underline;
+}
+
+.project__desc {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}

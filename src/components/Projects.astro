@@ -1,0 +1,52 @@
+---
+import { Card } from "./Card";
+import "../styles/projects.css";
+
+type ProjectLink = { label: string; href: string };
+type Project = {
+  name: string;
+  links: ProjectLink[];
+  description: string;
+};
+
+const projects: Project[] = [
+  {
+    name: "LogBro",
+    links: [
+      { label: "logbro.tomvolt.com", href: "https://logbro.tomvolt.com" },
+      {
+        label: "github.com/tomcorey26/LogBro",
+        href: "https://github.com/tomcorey26/LogBro",
+      },
+    ],
+    description:
+      "Time-blocking web app for tracking deliberate skill practice. Solo-built with Next.js 16, React 19, TypeScript, Drizzle/SQLite, and custom JWT auth. Implemented real-time timer state sync across client, server, and database with optimistic UI updates; Playwright and Vitest test coverage. Developed using Claude Code agent workflows while owning all architectural decisions.",
+  },
+  {
+    name: "Speech Islands",
+    links: [
+      { label: "speechislands.com", href: "https://speechislands.com/" },
+    ],
+    description:
+      "Full-stack language learning platform built with React, Node.js, and Next.js; integrates the OpenAI API for AI-generated personalized vocabulary flashcards.",
+  },
+];
+---
+
+<div class="projects">
+  {
+    projects.map((project) => (
+      <Card>
+        <h2 class="project__name">{project.name}</h2>
+        <div class="project__links">
+          {project.links.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer">
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <p class="project__desc">{project.description}</p>
+      </Card>
+    ))
+  }
+</div>

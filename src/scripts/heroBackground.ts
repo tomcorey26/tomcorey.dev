@@ -25,8 +25,8 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  // Particle cloud
-  const COUNT = 2200;
+  // Particle cloud (kept sparse so it reads as distant stars)
+  const COUNT = 850;
   const positions = new Float32Array(COUNT * 3);
   for (let i = 0; i < COUNT; i++) {
     positions[i * 3 + 0] = (Math.random() - 0.5) * 18;

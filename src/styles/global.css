@@ -53,6 +53,66 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Shared cosmic background on every page (BaseHead loads global.css
+   everywhere, so blog/about/posts get the same ambient as home).
+   Sits behind all content; the homepage layers its animated three.js
+   particles on top of this same baseline. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      40% 50% at 18% 18%,
+      rgba(99, 102, 241, 0.18),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 55% at 82% 22%,
+      rgba(192, 132, 252, 0.14),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 60% at 50% 92%,
+      rgba(129, 140, 248, 0.12),
+      transparent 70%
+    );
+  filter: blur(18px);
+  animation: aurora-drift 20s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 25px 35px, rgba(226, 232, 240, 0.5), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(226, 232, 240, 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 200px 160px, rgba(199, 210, 254, 0.4), transparent),
+    radial-gradient(1px 1px at 90px 220px, rgba(226, 232, 240, 0.3), transparent);
+  background-size: 260px 260px;
+  opacity: 0.6;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(2%, 2%, 0) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
 main {
   max-width: 1200px;
   margin: 0 auto;

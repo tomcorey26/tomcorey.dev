@@ -8,40 +8,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease, border-color 0.3s ease,
-    box-shadow 0.3s ease;
   overflow: hidden;
-}
-
-/* Cursor spotlight — --mx/--my set per-card by JS, default off-canvas */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    400px circle at var(--mx, -100%) var(--my, -100%),
-    var(--accent-glow),
-    transparent 40%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 12px 30px -8px var(--accent-glow);
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card > * {
-  position: relative;
-  z-index: 1;
 }
 
 .card > *:first-child {
@@ -56,14 +23,5 @@
   .card {
     padding: 1.5rem;
     margin: 1rem 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    transition: none;
-  }
-  .card:hover {
-    transform: none;
   }
 }

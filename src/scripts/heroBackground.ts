@@ -67,7 +67,6 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
     bobFreq: number;
     spin: number;
     phase: number;
-    ufo: boolean;
   }
   const fleet: Craft[] = [];
 
@@ -111,51 +110,14 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
     return g;
   }
 
-  function buildRocket(): THREE.Group {
-    const g = new THREE.Group();
-    const bodyMat = track(
-      new THREE.MeshBasicMaterial({
-        color: 0x94a3b8,
-        transparent: true,
-        opacity: 0.8,
-      })
-    );
-    const body = new THREE.Mesh(
-      track(new THREE.CylinderGeometry(0.16, 0.16, 0.7, 14)),
-      bodyMat
-    );
-    const nose = new THREE.Mesh(
-      track(new THREE.ConeGeometry(0.16, 0.32, 14)),
-      track(new THREE.MeshBasicMaterial({ color: 0xf0abfc, transparent: true, opacity: 0.85 }))
-    );
-    nose.position.y = 0.51;
-    const flame = new THREE.Mesh(
-      track(new THREE.ConeGeometry(0.12, 0.34, 12)),
-      track(new THREE.MeshBasicMaterial({ color: 0x818cf8, transparent: true, opacity: 0.6 }))
-    );
-    flame.position.y = -0.52;
-    flame.rotation.x = Math.PI;
-    const finGeo = track(new THREE.BoxGeometry(0.04, 0.22, 0.16));
-    for (let s = -1; s <= 1; s += 2) {
-      const fin = new THREE.Mesh(finGeo, bodyMat);
-      fin.position.set(s * 0.16, -0.28, 0);
-      g.add(fin);
-    }
-    // Point the rocket along its travel direction (+X)
-    g.rotation.z = -Math.PI / 2;
-    g.add(body, nose, flame);
-    return g;
-  }
-
-  // Fixed fleet, spread evenly across the span on first load (no random
-  // clustering / pop-in). They persist for the life of the page.
-  const makers = [buildUFO, buildUFO, buildRocket, buildRocket, buildUFO];
-  makers.forEach((make, i) => {
-    const group = make();
-    const isUfo = make === buildUFO;
+  // Fixed UFO fleet, spread evenly across the span on first load (no
+  // random clustering / pop-in). They persist for the life of the page.
+  const FLEET_SIZE = 5;
+  for (let i = 0; i < FLEET_SIZE; i++) {
+    const group = buildUFO();
     const scale = randRange(0.7, 1.2);
     group.scale.multiplyScalar(scale);
-    const slot = (i + 0.5) / makers.length; // 0..1 evenly
+    const slot = (i + 0.5) / FLEET_SIZE; // 0..1 evenly
     group.position.set(
       -SPAN_X / 2 + slot * SPAN_X,
       randRange(-3.5, 3.5),
@@ -169,9 +131,8 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
       bobFreq: randRange(0.4, 0.9),
       spin: randRange(0.3, 0.9),
       phase: Math.random() * Math.PI * 2,
-      ufo: isUfo,
     });
-  });
+  }
 
   // Pointer parallax
   let pointerX = 0;
@@ -206,13 +167,8 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
       if (p.x > SPAN_X / 2) p.x = -SPAN_X / 2;
       if (p.x < -SPAN_X / 2) p.x = SPAN_X / 2;
       p.y += Math.sin(t * c.bobFreq + c.phase) * c.bobAmp * 0.01;
-      if (c.ufo) {
-        c.group.rotation.y = t * c.spin; // saucer spin
-        c.group.rotation.z = Math.sin(t * 0.6 + c.phase) * 0.12; // tilt
-      } else {
-        // rocket already points +X (rotation.z = -90°); add a slow roll
-        c.group.rotation.y = t * c.spin * 0.6;
-      }
+      c.group.rotation.y = t * c.spin; // saucer spin
+      c.group.rotation.z = Math.sin(t * 0.6 + c.phase) * 0.12; // tilt
     }
 
     camera.position.x += (pointerX - camera.position.x) * 0.04;

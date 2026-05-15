@@ -146,17 +146,32 @@ import { SITE_TITLE } from "../config";
     }
 
     nav {
-      display: none;
+      display: flex;
       flex-direction: column;
       gap: 0;
       margin-top: 1rem;
       background: var(--surface);
       border-radius: 8px;
       overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: max-height 0.32s ease, opacity 0.25s ease,
+        transform 0.32s ease;
     }
 
     nav.open {
-      display: flex;
+      max-height: 360px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      nav {
+        transition: none;
+      }
     }
 
     nav :global(a) {
@@ -174,11 +189,23 @@ import { SITE_TITLE } from "../config";
   function initHamburger() {
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
-    hamburger?.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      nav?.classList.toggle("open");
+    if (!hamburger || hamburger.dataset.bound === "1") return;
+    hamburger.dataset.bound = "1";
+    hamburger.addEventListener("click", () => {
+      const open = hamburger.classList.toggle("active");
+      nav?.classList.toggle("open", open);
+      hamburger.setAttribute("aria-expanded", String(open));
+    });
+    // Close the menu after navigating via a link
+    nav?.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a")) {
+        hamburger.classList.remove("active");
+        nav.classList.remove("open");
+        hamburger.setAttribute("aria-expanded", "false");
+      }
     });
   }
-  initHamburger();
+  // With <ClientRouter />, astro:page-load fires on the initial load and
+  // after every navigation. The dataset guard keeps binding idempotent.
   document.addEventListener("astro:page-load", initHamburger);
 </script>

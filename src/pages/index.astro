@@ -89,9 +89,7 @@ const jobs: JobExperience[] = [
             Hey I'm Tom, a full-stack software engineer from Rhode Island with
             {yearsOfExperience}+ years shipping production web applications at
             scale. I'm strong in <strong
-              class="role-rotator"
-              id="role-rotator"
-              data-words="TypeScript,React,Node.js,.NET">TypeScript</strong
+              >TypeScript, React, Node.js</strong
             > and modern frontend tooling, with full-stack experience spanning
             distributed systems and external partner integrations.
             <strong
@@ -409,17 +407,6 @@ const jobs: JobExperience[] = [
         background: linear-gradient(90deg, #818cf8, #c084fc, #f0abfc);
       }
 
-      /* --- Role word rotator --- */
-      .role-rotator {
-        display: inline-block;
-        transition: opacity 0.25s ease, transform 0.25s ease;
-        will-change: opacity, transform;
-      }
-      .role-rotator.swapping {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-
       /* --- Portrait tilt --- */
       .portrait {
         transition: transform 0.2s ease;
@@ -442,7 +429,6 @@ const jobs: JobExperience[] = [
         #hero-canvas {
           animation: none;
         }
-        .role-rotator,
         .portrait {
           transition: none;
         }
@@ -461,7 +447,6 @@ const jobs: JobExperience[] = [
       ).matches;
 
       let heroBg: HeroBg | null = null;
-      let rotatorTimer: number | undefined;
 
       function initExperienceButton() {
         document
@@ -472,22 +457,6 @@ const jobs: JobExperience[] = [
               .getElementById("experience")
               ?.scrollIntoView({ behavior: "smooth" });
           });
-      }
-
-      function initRoleRotator() {
-        const el = document.getElementById("role-rotator");
-        if (!el || reduceMotion) return;
-        const words = (el.dataset.words || "").split(",").filter(Boolean);
-        if (words.length < 2) return;
-        let i = 0;
-        rotatorTimer = window.setInterval(() => {
-          el.classList.add("swapping");
-          window.setTimeout(() => {
-            i = (i + 1) % words.length;
-            el.textContent = words[i];
-            el.classList.remove("swapping");
-          }, 260);
-        }, 2400);
       }
 
       function initPortraitTilt() {
@@ -556,13 +525,11 @@ const jobs: JobExperience[] = [
       function teardown() {
         heroBg?.dispose();
         heroBg = null;
-        if (rotatorTimer) window.clearInterval(rotatorTimer);
       }
 
       function setup() {
         teardown();
         initExperienceButton();
-        initRoleRotator();
         initPortraitTilt();
         initScrollReveal();
         initHeroBg();

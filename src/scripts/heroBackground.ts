@@ -71,7 +71,9 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
   }
   const fleet: Craft[] = [];
 
-  const SPAN_X = 22; // wrap width
+  // Wrap well outside the visible frustum so craft never pop in/out on
+  // screen — they cross fully, then teleport back while off-screen.
+  const SPAN_X = 44;
   const randRange = (a: number, b: number) => a + Math.random() * (b - a);
 
   function buildUFO(): THREE.Group {
@@ -145,16 +147,19 @@ export function initHeroBackground(canvas: HTMLCanvasElement): HeroBg {
     return g;
   }
 
+  // Fixed fleet, spread evenly across the span on first load (no random
+  // clustering / pop-in). They persist for the life of the page.
   const makers = [buildUFO, buildUFO, buildRocket, buildRocket, buildUFO];
   makers.forEach((make, i) => {
     const group = make();
     const isUfo = make === buildUFO;
     const scale = randRange(0.7, 1.2);
     group.scale.multiplyScalar(scale);
+    const slot = (i + 0.5) / makers.length; // 0..1 evenly
     group.position.set(
-      randRange(-SPAN_X / 2, SPAN_X / 2),
-      randRange(-4, 4),
-      randRange(-6, -1)
+      -SPAN_X / 2 + slot * SPAN_X,
+      randRange(-3.5, 3.5),
+      randRange(-6, -1.5)
     );
     scene.add(group);
     fleet.push({

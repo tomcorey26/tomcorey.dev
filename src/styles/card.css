@@ -52,17 +52,12 @@
   margin-bottom: 0;
 }
 
-.card.introduction {
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-}
-
+/* Hero card: same glass panel as the rest, but it's not an interactive
+   content card — no hover lift, no cursor spotlight. */
 .card.introduction:hover {
   transform: none;
-  box-shadow: none;
+  border-color: var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 .card.introduction::before {

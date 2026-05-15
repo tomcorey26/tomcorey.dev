@@ -56,6 +56,22 @@ const { title, description, pubDate, updatedDate, heroImage, imgAlt, imgCredit }
         object-fit: cover;
         border: 2px solid var(--accent-dim);
         border-radius: 0;
+        animation: hero-image-load 0.6s ease-out forwards;
+      }
+      @keyframes hero-image-load {
+        0% {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .hero-image {
+          animation: none;
+        }
       }
       time {
         color: var(--text-muted);
@@ -74,7 +90,14 @@ const { title, description, pubDate, updatedDate, heroImage, imgAlt, imgCredit }
       <article>
         {
           heroImage && (
-            <img class="hero-image" src={heroImage} alt={imgAlt} />
+            <img
+              class="hero-image"
+              src={heroImage}
+              alt={imgAlt}
+              width="800"
+              height="700"
+              decoding="async"
+            />
           )
         }
         {

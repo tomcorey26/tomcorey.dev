@@ -1,13 +1,47 @@
 .card {
-  /* background: rgba(255, 255, 255, 0.03); */
-  /* border: 1px solid rgba(255, 255, 255, 0.08); */
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 2rem;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
-.card.dark {
-  /* background: rgba(30, 41, 59, 0.7); */
+/* Cursor spotlight — --mx/--my set per-card by JS, default off-canvas */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--mx, -100%) var(--my, -100%),
+    var(--accent-glow),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 30px -8px var(--accent-glow);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card > *:first-child {
@@ -16,6 +50,23 @@
 
 .card > *:last-child {
   margin-bottom: 0;
+}
+
+.card.introduction {
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.card.introduction:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.card.introduction::before {
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -27,5 +78,14 @@
   .card.introduction {
     padding: 1rem;
     margin: 0.5rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  .card:hover {
+    transform: none;
   }
 }

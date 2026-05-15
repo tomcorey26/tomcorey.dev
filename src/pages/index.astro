@@ -67,6 +67,11 @@ const jobs: JobExperience[] = [
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
+    <div class="bg-fx" aria-hidden="true">
+      <div class="aurora"></div>
+      <canvas id="hero-canvas"></canvas>
+    </div>
+
     <Header title={SITE_TITLE} />
 
     <main>
@@ -84,7 +89,9 @@ const jobs: JobExperience[] = [
             Hey I'm Tom, a full-stack software engineer from Rhode Island with
             {yearsOfExperience}+ years shipping production web applications at
             scale. I'm strong in <strong
-              >TypeScript, React, Node.js</strong
+              class="role-rotator"
+              id="role-rotator"
+              data-words="TypeScript,React,Node.js,.NET">TypeScript</strong
             > and modern frontend tooling, with full-stack experience spanning
             distributed systems and external partner integrations.
             <strong
@@ -337,17 +344,235 @@ const jobs: JobExperience[] = [
           font-size: 0.95rem;
         }
       }
+
+      /* --- Background FX --- */
+      .bg-fx {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+      #hero-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1.2s ease;
+      }
+      #hero-canvas.ready {
+        opacity: 1;
+      }
+      .aurora {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            40% 50% at 20% 20%,
+            rgba(99, 102, 241, 0.22),
+            transparent 70%
+          ),
+          radial-gradient(
+            45% 55% at 80% 25%,
+            rgba(192, 132, 252, 0.18),
+            transparent 70%
+          ),
+          radial-gradient(
+            50% 60% at 50% 90%,
+            rgba(129, 140, 248, 0.16),
+            transparent 70%
+          );
+        filter: blur(20px);
+        animation: aurora-drift 18s ease-in-out infinite alternate;
+      }
+      @keyframes aurora-drift {
+        0% {
+          transform: translate3d(-2%, -1%, 0) scale(1);
+        }
+        100% {
+          transform: translate3d(2%, 2%, 0) scale(1.08);
+        }
+      }
+
+      /* --- Gradient section heading underline --- */
+      .section-heading {
+        position: relative;
+        width: fit-content;
+      }
+      .section-heading::after {
+        content: "";
+        display: block;
+        width: 64px;
+        height: 4px;
+        margin-top: 0.5rem;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #818cf8, #c084fc, #f0abfc);
+      }
+
+      /* --- Role word rotator --- */
+      .role-rotator {
+        display: inline-block;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        will-change: opacity, transform;
+      }
+      .role-rotator.swapping {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      /* --- Portrait tilt --- */
+      .portrait {
+        transition: transform 0.2s ease;
+        will-change: transform;
+      }
+
+      /* --- Scroll reveal --- */
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      [data-reveal].is-visible {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .aurora,
+        #hero-canvas {
+          animation: none;
+        }
+        .role-rotator,
+        .portrait {
+          transition: none;
+        }
+        [data-reveal] {
+          opacity: 1;
+          transform: none;
+        }
+      }
     </style>
 
     <script>
-      document
-        .getElementById("view-experience-btn")
-        ?.addEventListener("click", (e) => {
-          e.preventDefault();
-          document
-            .getElementById("experience")
-            ?.scrollIntoView({ behavior: "smooth" });
+      import type { HeroBg } from "../scripts/heroBackground";
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      let heroBg: HeroBg | null = null;
+      let rotatorTimer: number | undefined;
+
+      function initExperienceButton() {
+        document
+          .getElementById("view-experience-btn")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            document
+              .getElementById("experience")
+              ?.scrollIntoView({ behavior: "smooth" });
+          });
+      }
+
+      function initRoleRotator() {
+        const el = document.getElementById("role-rotator");
+        if (!el || reduceMotion) return;
+        const words = (el.dataset.words || "").split(",").filter(Boolean);
+        if (words.length < 2) return;
+        let i = 0;
+        rotatorTimer = window.setInterval(() => {
+          el.classList.add("swapping");
+          window.setTimeout(() => {
+            i = (i + 1) % words.length;
+            el.textContent = words[i];
+            el.classList.remove("swapping");
+          }, 260);
+        }, 2400);
+      }
+
+      function initPortraitTilt() {
+        const img = document.querySelector<HTMLElement>(".portrait");
+        if (!img || reduceMotion) return;
+        const onMove = (e: PointerEvent) => {
+          const r = img.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          img.style.transform = `perspective(600px) rotateY(${
+            px * 12
+          }deg) rotateX(${-py * 12}deg) scale(1.04)`;
+        };
+        const reset = () => {
+          img.style.transform = "";
+        };
+        img.addEventListener("pointermove", onMove);
+        img.addEventListener("pointerleave", reset);
+      }
+
+      function initScrollReveal() {
+        const cards = document.querySelectorAll(
+          "#experience .card, #projects .card, #education .card"
+        );
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+          cards.forEach((c) => c.classList.add("is-visible"));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+        );
+        cards.forEach((c) => {
+          c.setAttribute("data-reveal", "");
+          io.observe(c);
         });
+      }
+
+      function initHeroBg() {
+        const canvas = document.getElementById(
+          "hero-canvas"
+        ) as HTMLCanvasElement | null;
+        if (!canvas || reduceMotion) return;
+        const load = () =>
+          import("../scripts/heroBackground").then(
+            ({ initHeroBackground }) => {
+              if (!document.body.contains(canvas)) return;
+              heroBg = initHeroBackground(canvas);
+              canvas.classList.add("ready");
+            }
+          );
+        if ("requestIdleCallback" in window) {
+          (window as any).requestIdleCallback(load, { timeout: 2000 });
+        } else {
+          window.setTimeout(load, 600);
+        }
+      }
+
+      function teardown() {
+        heroBg?.dispose();
+        heroBg = null;
+        if (rotatorTimer) window.clearInterval(rotatorTimer);
+      }
+
+      function setup() {
+        teardown();
+        initExperienceButton();
+        initRoleRotator();
+        initPortraitTilt();
+        initScrollReveal();
+        initHeroBg();
+      }
+
+      // With <ClientRouter />, astro:page-load fires on the initial load and
+      // after every client-side navigation. setup() is idempotent (it calls
+      // teardown() first), so binding only to these two events is safe.
+      document.addEventListener("astro:page-load", setup);
+      document.addEventListener("astro:before-swap", teardown);
     </script>
   </body>
 </html>

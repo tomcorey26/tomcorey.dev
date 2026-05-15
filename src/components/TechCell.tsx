@@ -1,36 +1,35 @@
-import { Card } from "./Card";
 import "../styles/tech-cell.css";
 
 interface Props {
   tech: TechSkill;
 }
 
-const urlMap: Record<TechSkill, string> = {
-  React: "https://img.stackshare.io/service/1020/OYIaJ1KK.png",
-  Vue: "https://img.stackshare.io/service/3837/paeckCWC.png",
-  JavaScript: "https://img.stackshare.io/service/1209/javascript.jpeg",
-  TypeScript: "https://img.stackshare.io/service/1612/bynNY5dJ.jpg",
-  "Node.js": "https://img.stackshare.io/service/1011/n1JRsFeB_400x400.png",
-  MongoDB: "https://img.stackshare.io/service/1030/leaf-360x360.png",
-  Sass: "https://img.stackshare.io/service/1171/jCR2zNJV.png",
-  "C#": "https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png",
-  ".NET": "https://img.stackshare.io/service/1014/IoPy1dce_400x400.png",
-  Azure: "https://img.stackshare.io/service/4313/XNKktHjN_400x400.png",
-  Elasticsearch:
-    "https://img.stackshare.io/service/841/Image_2019-05-20_at_4.58.04_PM.png",
-  RabbitMQ:
-    "https://img.stackshare.io/service/1061/default_df93e9a30d27519161b39d8c1d5c223c1642d187.jpg",
-  PHP: "https://img.stackshare.io/service/991/hwUcGZ41_400x400.jpg",
-  PostgreSQL: "https://img.stackshare.io/service/1028/ASOhU5xJ.png",
+const colorMap: Record<TechSkill, string> = {
+  React: "#61dafb",
+  Vue: "#42b883",
+  JavaScript: "#f7df1e",
+  TypeScript: "#3178c6",
+  "Node.js": "#5fa04e",
+  MongoDB: "#47a248",
+  Sass: "#cc6699",
+  "C#": "#9b4f96",
+  ".NET": "#512bd4",
+  Azure: "#0078d4",
+  Elasticsearch: "#fed10a",
+  RabbitMQ: "#ff6600",
+  PHP: "#777bb4",
+  PostgreSQL: "#4169e1",
 };
 
 export const TechCell = ({ tech }: Props) => {
+  const color = colorMap[tech] ?? "var(--accent)";
   return (
-    <div className="cell">
-      <div className="cell__img-container">
-        <img src={urlMap[tech]} alt={`${tech} icon`} />
-      </div>
-      <div className="cell__language">{tech}</div>
+    <div
+      className="chip"
+      style={{ "--chip-color": color } as React.CSSProperties}
+    >
+      <span className="chip__dot" />
+      <span className="chip__label">{tech}</span>
     </div>
   );
 };

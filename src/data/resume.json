@@ -1,0 +1,36 @@
+{
+  "summary": "Frontend-leaning full-stack engineer with 6 years shipping production web applications. Deep in TypeScript, React, and modern frontend architecture, with full-stack reach across Node.js services. Uses Claude Code and agentic workflows daily",
+  "jobs": [
+    {
+      "title": "Full-Stack Software Engineer",
+      "company": "DealerOn",
+      "dates": "Jan 2021 - Present",
+      "location": "Remote",
+      "points": [
+        "Sole frontend owner of dealer-facing pricing configuration application serving 7,000+ automotive dealerships. The system controls vehicle pricing, financing offers, and promotional CTAs across every dealer website on the platform",
+        "Rebuilt a legacy AngularJS feed-configuration tool as a modern React application, letting operations teams self-serve third-party inventory feed setup (sources, priority order, categories like stock/pricing/photos); tested end-to-end with Playwright/Vitest",
+        "Drove adoption of React 19 across the team's apps: authored the analysis and proof-of-concept PR that made the migration the prerequisite for a shared component library, sparking the modernization effort and personally migrating one of the apps.",
+        "Delivered full-stack integrations with 10+ major partners including Ford, GM, and Capital One",
+        "Contributed across a 4-service inventory pipeline processing 200,000+ daily vehicle updates; extended priority-queue handling across 3 services to support 10 priority levels"
+      ]
+    },
+    {
+      "title": "Software Engineer (Contract)",
+      "company": "CVS Health",
+      "dates": "Jan 2020 - Dec 2020",
+      "location": "",
+      "points": [
+        "Built TypeScript/React tool for automated API proxy generation on Google Cloud Apigee, supporting public CVS Health API infrastructure"
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "Maverick Investment Technologies",
+      "dates": "Jan 2020 - Dec 2020",
+      "location": "",
+      "points": [
+        "Developed React-based financial analysis platform with real-time stock data visualization and PHP REST API integration"
+      ]
+    }
+  ]
+}

@@ -7,55 +7,49 @@ import { Dialog } from "../components/Dialog";
 import { Card } from "../components/Card";
 import JobExperience from "../components/JobExperience";
 import Projects from "../components/Projects.astro";
+// Summary and job bullets come from the resume repo: on every push there, a
+// workflow regenerates this file (and public/resume.pdf) from main.tex.
+import resume from "../data/resume.json";
 
-const firstJobStart = new Date("2020-01-01");
-const yearsOfExperience = Math.floor(
-  (Date.now() - firstJobStart.getTime()) / (1000 * 60 * 60 * 24 * 365.25)
-);
+/** Title and bullets for a company, as written in the resume. */
+function fromResume(company: string) {
+  const job = resume.jobs.find((j) => j.company === company);
+  if (!job) {
+    throw new Error(
+      `No "${company}" job in src/data/resume.json - it is generated from main.tex in the resume repo`
+    );
+  }
+  return { title: job.title, points: job.points };
+}
 
 const jobs: JobExperience[] = [
   {
-    title: "Full-Stack Software Engineer",
+    ...fromResume("DealerOn"),
     company: "DealerOn",
     companyUrl: "https://www.dealeron.com/",
     emoji: "🚗",
     logo: "https://media.licdn.com/dms/image/v2/D4E0BAQE0rro_noAHwA/company-logo_100_100/B4EZeyBk_QG4AU-/0/1751038448044/dealeron_inc_logo?e=1758758400&v=beta&t=9DLVRNbAbHuJisAREn8yCxqV8-2CNqpiRNASLBgkXjU",
     startDate: new Date("2020-12-23"),
-    points: [
-      `Built and shipped a greenfield React application enabling operations teams to self-serve OEM feed configuration, eliminating developer-blocking work and accelerating onboarding of new inventory integrations, with full Playwright test coverage`,
-
-      `Sole frontend owner of the dealer-facing pricing configuration application serving 7,000+ automotive dealerships, controlling vehicle pricing, financing offers, and OEM CTAs across every dealer website on the platform; modernized framework and state management across 100+ components`,
-
-      `Delivered full-stack integrations with 10+ major partners including Ford, GM, and Capital One, working to external partnership deadlines`,
-
-      `Contributed full-stack across a 4-service inventory pipeline processing 200,000+ daily vehicle updates; architected priority queue expansion across 3 microservices and resolved production incidents including a queue storm (25,793 messages) and an Elasticsearch indexer bug affecting 3,876 dealerships`,
-    ],
     skills: ["React", "Vue", "TypeScript", ".NET", "C#", "RabbitMQ", "Elasticsearch"],
   },
   {
-    title: "Software Engineer (Contract)",
+    ...fromResume("CVS Health"),
     company: "CVS Health",
     companyUrl: "https://www.cvshealth.com/",
     emoji: "🏥",
     logo: "https://media.licdn.com/dms/image/v2/C4E0BAQEhOw_KVli-CQ/company-logo_100_100/company-logo_100_100/0/1669901807779/cvs_health_logo?e=1758758400&v=beta&t=igAalYXweOJbVvykHVkz6Bzb6srgc3mZBFKl-F1ww6M",
     startDate: new Date("2020-10-01"),
     endDate: new Date("2020-12-20"),
-    points: [
-      "Built a TypeScript/React tool for automated API proxy generation on Google Cloud's Apigee platform, supporting public CVS Health API infrastructure",
-    ],
     skills: ["TypeScript", "React", "Node.js"],
   },
   {
-    title: "Software Engineer",
+    ...fromResume("Maverick Investment Technologies"),
     company: "Maverick Investment Technologies",
     companyUrl: "https://www.linkedin.com/company/maverick-investment-tech/",
     emoji: "📈",
     logo: "https://media.licdn.com/dms/image/v2/C4D0BAQET0W6apKlh9Q/company-logo_100_100/company-logo_100_100/0/1630521649519/maverick_investment_tech_logo?e=1758758400&v=beta&t=5w8-3djs2yQDjORC_e8QEuiLaiLLdDMqMLPwVN7Ebx0",
     startDate: new Date("2020-01-01"),
     endDate: new Date("2020-10-01"),
-    points: [
-      "Developed a React-based financial analysis platform with real-time stock data visualization and PHP REST API integration",
-    ],
     skills: ["React", "JavaScript", "PHP", "PostgreSQL"],
   },
 ];
@@ -90,10 +84,7 @@ const jobs: JobExperience[] = [
           </div>
           <p class="hero-eyebrow">Full-Stack Software Engineer</p>
           <h1 class="hero-name">Tom Corey</h1>
-          <p class="hero-tagline">
-            {yearsOfExperience}+ years shipping production web apps at scale.
-            TypeScript, React, Node.js &amp; modern full-stack.
-          </p>
+          <p class="hero-tagline">{resume.summary}</p>
           <div class="cta-buttons">
             <a
               href="#experience"
